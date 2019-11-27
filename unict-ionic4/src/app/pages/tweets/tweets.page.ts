@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { UniLoaderService } from 'src/app/shared/uniLoader.service';
 import { ToastService } from 'src/app/shared/toast.service';
 import { ToastTypes } from 'src/app/enums/toast-types.enum';
+import { CommentPage } from 'src/app/pages/comment/comment.page';
 
 @Component({
   selector: 'app-tweets',
@@ -150,6 +151,17 @@ export class TweetsPage implements OnInit {
 
     */
 
+  }
+
+  //Create a comment
+  async createComment(tweet: Tweet){
+    //Create a modal to comment the tweet
+    const modal = await this.modalCtrl.create({
+      component: CommentPage,
+      componentProps: {tweet}
+    });
+    return modal.present();
+    
   }
 
 }
