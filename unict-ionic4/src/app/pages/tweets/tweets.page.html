@@ -24,6 +24,9 @@
   
         </ion-label>
         <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
+        <ion-button (click)="createComment(tweet)" shape="round">
+          <ion-icon name="undo"></ion-icon>
+        </ion-button>
       </ion-item>
   
       <ion-item-options *ngIf="canEdit(tweet)" side="end">
