@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Tweet, NewTweet } from 'src/app/interfaces/tweet';
 import { TweetsService } from 'src/app/services/tweets/tweets.service';
-import { NavParams } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 
 
 @Component({
@@ -14,6 +14,7 @@ export class CommentPage implements OnInit {
   constructor(
     private tweetsService: TweetsService,
     private navParams: NavParams,
+    private modalCtrl: ModalController
     ) {
       
    }
@@ -38,16 +39,23 @@ export class CommentPage implements OnInit {
     this.comment.parent_id = parent_id;
     this.comment.tweet = this.textarea;
     */
-   const comment = <NewTweet>{
-    tweet: this.testo,
-    parent_id: this.masterTweet._id
-
-  }
+    const comment = <NewTweet>{
+      tweet: this.testo,
+      parent_id: this.masterTweet._id
+    }
   
     this.tweetsService.createTweet(comment);
     console.log("Tweet id: "+ this.masterTweet._id);
     console.log(this.testo);
     console.log("Parent Id: "+comment.parent_id);
+    this.dismiss();
+  }
+
+
+  async dismiss() {
+
+    await this.modalCtrl.dismiss();
+
   }
 
 }

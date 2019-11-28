@@ -34,6 +34,13 @@ export class TweetsService {
     return this.http.get<Tweet[]>(`${environment.API_URL}/tweets`).toPromise();
   }
 
+    // READ
+    async getParentTweets(parent_id: string) {
+      let url = environment.API_URL+"/tweets/parent?parent_id="+parent_id;
+      //return this.http.get<Tweet[]>(`${environment.API_URL}/tweets/parent?parentId=0`).toPromise();
+      return this.http.get<Tweet[]>(url).toPromise();
+    }
+
   // UPDATE
   async editTweet(tweet: Tweet) {
     const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);

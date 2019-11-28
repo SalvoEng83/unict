@@ -1,21 +1,26 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>New comment</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>New comment</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
+
     <ion-item>
         <ion-textarea [(ngModel)]="testo" placeholder="Write a comment..."></ion-textarea>
     </ion-item>
-  
+
     <ion-item lines="none">
-      <ion-button (click)="addComment()" slot="end">
-          <ion-icon name="add-circle"></ion-icon>
-      </ion-button>
+
+        <ion-button color="dark" (click)="dismiss()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-button>
+
+        <ion-button (click)="addComment()" slot="end">
+            <ion-icon name="add-circle"></ion-icon>
+        </ion-button>
     </ion-item>
-      
+
 
 
 </ion-content>
