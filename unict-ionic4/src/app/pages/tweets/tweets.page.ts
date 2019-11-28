@@ -168,6 +168,7 @@ export class TweetsPage implements OnInit {
   }
   /*Handles tweet likes*/
 
+  
 
   async likeTweet(tweet:Tweet){
     this.tweetsService.likeTweet(tweet._id,this.auth.me._id);
@@ -175,12 +176,27 @@ export class TweetsPage implements OnInit {
     if(user != undefined){
       var index = tweet.like_user_list.findIndex(x => x == this.auth.me._id);
       tweet.like_user_list.splice(index,1);
+      
     }
     else{
       tweet.like_user_list.push(this.auth.me._id);
+      
     }
     
     console.log("Current user: "+this.auth.me._id);
+  }
+
+  isLiked(tweet:Tweet){
+    var user = tweet.like_user_list.find(x => x == this.auth.me._id);
+    if(user != undefined){
+      
+      return true;
+      
+    }
+    else{
+      return false;
+      
+    }
   }
 
 }
