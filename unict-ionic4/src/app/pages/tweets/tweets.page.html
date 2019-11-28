@@ -33,9 +33,7 @@
 
                 <!-- Like button-->
                 <ion-item lines="none">
-                    <ion-button (click)="likeTweet(tweet)">
-                        <ion-icon name="heart"></ion-icon>
-                    </ion-button>
+                    <ion-icon (click)="likeTweet(tweet)" [color]="isLiked(tweet) ? 'danger' : 'dark'" name="heart"></ion-icon>
                 </ion-item>
                 <ion-item>
                     <p>{{tweet.like_user_list.length}}</p>
