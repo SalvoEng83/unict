@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { UniLoaderService } from 'src/app/shared/uniLoader.service';
 import { ToastService } from 'src/app/shared/toast.service';
 import { ToastTypes } from 'src/app/enums/toast-types.enum';
+import { CommentPage } from 'src/app/pages/comment/comment.page';
 
 @Component({
   selector: 'app-tweets',
@@ -16,13 +17,15 @@ import { ToastTypes } from 'src/app/enums/toast-types.enum';
 export class TweetsPage implements OnInit {
 
   tweets: Tweet[] = [];
+ 
 
   constructor(
     private tweetsService: TweetsService,
     private modalCtrl: ModalController,
     private auth: AuthService,
     private uniLoader: UniLoaderService,
-    private toastService: ToastService
+    private toastService: ToastService,
+
   ) { }
 
   async ngOnInit() {
@@ -63,6 +66,7 @@ export class TweetsPage implements OnInit {
         Creo una modal (assegnandola ad una variabile)
         per permettere all'utente di scrivere un nuovo tweet
     */
+    
     const modal = await this.modalCtrl.create({
       component: NewTweetPage,
       componentProps: {
@@ -150,6 +154,49 @@ export class TweetsPage implements OnInit {
 
     */
 
+  }
+
+  //Create a comment
+  async createComment(tweet: Tweet){
+    //Create a modal to comment the tweet
+    const modal = await this.modalCtrl.create({
+      component: CommentPage,
+      componentProps: {tweet}
+    });
+    return modal.present();
+    
+  }
+  /*Handles tweet likes*/
+
+  
+
+  async likeTweet(tweet:Tweet){
+    this.tweetsService.likeTweet(tweet._id,this.auth.me._id);
+    var user = tweet.like_user_list.find(x => x == this.auth.me._id);
+    if(user != undefined){
+      var index = tweet.like_user_list.findIndex(x => x == this.auth.me._id);
+      tweet.like_user_list.splice(index,1);
+      
+    }
+    else{
+      tweet.like_user_list.push(this.auth.me._id);
+      
+    }
+    
+    console.log("Current user: "+this.auth.me._id);
+  }
+
+  isLiked(tweet:Tweet){
+    var user = tweet.like_user_list.find(x => x == this.auth.me._id);
+    if(user != undefined){
+      
+      return true;
+      
+    }
+    else{
+      return false;
+      
+    }
   }
 
 }
