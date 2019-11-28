@@ -8,6 +8,8 @@ import { UniLoaderService } from 'src/app/shared/uniLoader.service';
 import { ToastService } from 'src/app/shared/toast.service';
 import { ToastTypes } from 'src/app/enums/toast-types.enum';
 import { CommentPage } from 'src/app/pages/comment/comment.page';
+import { TweetDetailPage } from 'src/app/pages/tweet-detail/tweet-detail.page';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tweets',
@@ -25,7 +27,7 @@ export class TweetsPage implements OnInit {
     private auth: AuthService,
     private uniLoader: UniLoaderService,
     private toastService: ToastService,
-
+    private navCtrl: NavController,
   ) { }
 
   async ngOnInit() {
@@ -43,7 +45,8 @@ export class TweetsPage implements OnInit {
       await this.uniLoader.show();
 
       // Popolo il mio array di oggetti 'Tweet' con quanto restituito dalla chiamata API
-      this.tweets = await this.tweetsService.getTweets();
+      //this.tweets = await this.tweetsService.getTweets();
+      this.tweets = await this.tweetsService.getParentTweets('0');
 
       // La chiamata è andata a buon fine, dunque rimuovo il loader
       await this.uniLoader.dismiss();
@@ -182,5 +185,30 @@ export class TweetsPage implements OnInit {
     
     console.log("Current user: "+this.auth.me._id);
   }
+
+
+  async showTweetDetail(tweet: Tweet){
+    //Create a modal to comment the tweet
+    const detailmodal = await this.modalCtrl.create({
+      component: TweetDetailPage,
+      componentProps: {tweet}
+    });
+
+    detailmodal.onDidDismiss()
+    .then(async () => {
+  
+      // Aggiorno la mia lista di tweet, per importare le ultime modifiche apportate dall'utente
+      await this.getTweets();
+  
+      // La chiamata è andata a buon fine, dunque rimuovo il loader
+      await this.uniLoader.dismiss();
+  
+    });
+  
+    // Visualizzo la modal
+    return await detailmodal.present();  
+  }
+
+
 
 }
