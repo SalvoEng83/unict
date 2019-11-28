@@ -27,6 +27,15 @@
         <ion-button (click)="createComment(tweet)" shape="round">
           <ion-icon name="undo"></ion-icon>
         </ion-button>
+        <!-- Like button-->
+      <ion-item lines="none">
+        <ion-button (click)="likeTweet(tweet)">
+            <ion-icon name="heart"></ion-icon>  
+        </ion-button>
+       </ion-item>
+      <ion-item>
+        <p>{{tweet.like_user_list.length}}</p>
+      </ion-item>
       </ion-item>
   
       <ion-item-options *ngIf="canEdit(tweet)" side="end">
