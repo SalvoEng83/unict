@@ -10,6 +10,8 @@ import { ToastTypes } from 'src/app/enums/toast-types.enum';
 import { CommentPage } from 'src/app/pages/comment/comment.page';
 import { TweetDetailPage } from 'src/app/pages/tweet-detail/tweet-detail.page';
 import { NavController } from '@ionic/angular';
+import { UsersService } from 'src/app/services/users/users.service';
+
 
 @Component({
   selector: 'app-tweets',
@@ -19,7 +21,6 @@ import { NavController } from '@ionic/angular';
 export class TweetsPage implements OnInit {
 
   tweets: Tweet[] = [];
- 
 
   constructor(
     private tweetsService: TweetsService,
@@ -28,6 +29,7 @@ export class TweetsPage implements OnInit {
     private uniLoader: UniLoaderService,
     private toastService: ToastService,
     private navCtrl: NavController,
+    private userService: UsersService
   ) { }
 
   async ngOnInit() {
@@ -74,7 +76,7 @@ export class TweetsPage implements OnInit {
         Creo una modal (assegnandola ad una variabile)
         per permettere all'utente di scrivere un nuovo tweet
     */
-    
+
     const modal = await this.modalCtrl.create({
       component: NewTweetPage,
       componentProps: {
@@ -146,6 +148,32 @@ export class TweetsPage implements OnInit {
     return false;
 
   }
+
+// storia3
+async books(tweet: Tweet){
+  if(this.auth.me.bookmarks.includes(tweet._id)){ //se lo trova lo rimuovo
+  for( var i = 0; i < this.auth.me.bookmarks.length; i++){ 
+    if ( this.auth.me.bookmarks[i] === tweet._id) {
+      this.auth.me.bookmarks.splice(i, 1); 
+    }
+ }
+}else{ //lo aggiungo
+  this.auth.me.bookmarks.push(tweet._id);
+}
+//aggiorna il db
+await this.userService.editUser(this.auth.me);
+}
+
+
+  preferred(tweet: Tweet): boolean{
+    //console.log(tweet._id);
+  
+    if(this.auth.me.bookmarks.includes(tweet._id))
+      return true;
+    else
+      return false;
+  }
+// fine modifiche storia3
 
   // Metodo bindato con l'interfaccia in Angular
   getAuthor(tweet: Tweet): string {

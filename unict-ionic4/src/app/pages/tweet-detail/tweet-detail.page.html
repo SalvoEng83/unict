@@ -78,6 +78,14 @@
 
                 </ion-label>
                 <ion-note slot="end">{{ formatDate(tweet.created_at) }}</ion-note>
+
+                <!-- Like button-->
+                <!--
+                <ion-item lines="none">
+                    <ion-icon (click)="likeTweet(tweet)" [color]="isLiked(tweet) ? 'danger' : 'dark'" name="heart"></ion-icon>
+                </ion-item>
+                -->
+
                 <ion-item lines="full">
                     <ion-button color="primary" (click)="showTweetDetail(tweet)">
                         <ion-icon name="more"></ion-icon>

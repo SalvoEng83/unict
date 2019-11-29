@@ -14,8 +14,8 @@ const routes: Routes = [
   { path: 'signup', loadChildren: './pages/signup/signup.module#SignupPageModule' },
   { path: 'new-tweet', loadChildren: './pages/new-tweet/new-tweet.module#NewTweetPageModule' },
   { path: 'comment', loadChildren: './pages/comment/comment.module#CommentPageModule' },
-  { path: 'tweet-detail', loadChildren: './pages/tweet-detail/tweet-detail.module#TweetDetailPageModule' }
-  
+  { path: 'tweet-detail', loadChildren: './pages/tweet-detail/tweet-detail.module#TweetDetailPageModule' },
+  { path: 'bookmarks', loadChildren: './pages/bookmarks/bookmarks.module#BookmarksPageModule' }
 
 ];
 @NgModule({
@@ -25,3 +25,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+

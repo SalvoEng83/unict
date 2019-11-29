@@ -26,7 +26,12 @@
                     </ng-template>
 
                 </ion-label>
+
+                <ion-icon *ngIf="preferred(tweet)" (click)="books(tweet)" name="star" color="danger-tint"></ion-icon>
+                <ion-icon *ngIf="!preferred(tweet)" (click)="books(tweet)" name="star-outline" color="danger-tint"></ion-icon>
+
                 <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
+
                 <ion-button (click)="createComment(tweet)" shape="round">
                     <ion-icon name="undo"></ion-icon>
                 </ion-button>
@@ -42,6 +47,17 @@
                     <p>{{tweet.like_user_list.length}}</p>
                 </ion-item>
             </ion-item>
+
+            <!--
+      <ion-item-options *ngIf="!canEdit(tweet)" side="end">
+        <ion-item-option color="success">
+          <ion-icon slot="icon-only" name="send"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger">
+          <ion-icon slot="icon-only" name="bookmark" (click)="books(tweet)"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    -->
 
             <ion-item-options *ngIf="canEdit(tweet)" side="end">
                 <ion-item-option color="secondary" (click)="createOrEditTweet(tweet)">
