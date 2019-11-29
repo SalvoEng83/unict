@@ -12,4 +12,7 @@ export interface Tweet {
     _author: User;
     parent_id: string;
     like_user_list: string[];
+    check: Number;
+    hashtags:string[];
+    hashtags_final:string;
 }

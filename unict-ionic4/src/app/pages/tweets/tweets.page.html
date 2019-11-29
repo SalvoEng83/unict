@@ -1,6 +1,9 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>tweets</ion-title>
+        <p>
+            <ion-title>tweets</ion-title>
+        </p>
+        <ion-searchbar type="text" debounce="500" (ionInput)="getItems($event)"></ion-searchbar>
     </ion-toolbar>
 </ion-header>
 

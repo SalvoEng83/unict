@@ -63,6 +63,11 @@ export class TweetsPage implements OnInit {
 
   }
 
+   /*Handle hashtags */
+   private hashtagsList:string[];
+
+
+
   async createOrEditTweet(tweet?: Tweet) {
 
     /*
@@ -211,6 +216,7 @@ export class TweetsPage implements OnInit {
     return await detailmodal.present();  
   }
 
+
   isLiked(tweet:Tweet){
     var user = tweet.like_user_list.find(x => x == this.auth.me._id);
     if(user != undefined){
@@ -221,6 +227,50 @@ export class TweetsPage implements OnInit {
     else{
       return false;
       
+    }
+  }
+ 
+
+  // SEARCH BAR
+  getItems(ev: any) {
+    // set val to the value of the searchbar
+    for(let i = 0; i <  this.tweets.length; i++){
+      this.tweets[i].hashtags = (this.tweets[i].tweet.split(' ').filter(v=> v.startsWith('#')));
+      
+      console.log(this.tweets[i].hashtags);
+    }
+    console.log("PROVA: "+this.tweets);
+    let val :string= ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    
+    if (val) {
+      if(val.startsWith("#")){
+        val=val;
+      }else{
+        val="#"+val;
+      }
+
+    this.tweets=this.tweets.filter((t)=>{
+        for(let i =0;i<t.hashtags.length;i++){
+          if(t.hashtags[i].toLowerCase().startsWith(val.toLowerCase())){
+            return t;
+          }
+        }
+    })
+
+    } else{
+      return this.getTweets();
+    }
+  }
+
+  addHashtagsToClass(){
+    for(let i = 0; i < this.tweets.length; i++){
+      if(this.tweets[i].tweet.includes("#")){
+        let tmp:any = (this.tweets[i].tweet.split(' ').filter(v=> v.startsWith('#')));
+        tmp.setAttribute("class","hashtag");
+        console.log(this.tweets[i].tweet.split(' ').filter(v=> v.startsWith('#')));
+      }
     }
   }
 

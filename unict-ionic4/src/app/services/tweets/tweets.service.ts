@@ -61,9 +61,11 @@ export class TweetsService {
   //Like
   async likeTweet(tweetId: string, user_id: string){
     //const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
-    const sub = this.http.put<any>(`${environment.API_URL}/tweets/${tweetId}/${user_id}`, {
+    
+    this.http.put<any>(`${environment.API_URL}/tweets/${tweetId}/${user_id}`, {
       //headers: headerOptions,
     }).toPromise();
+
   }
 
 }

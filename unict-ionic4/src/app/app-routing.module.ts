@@ -12,10 +12,9 @@ const routes: Routes = [
   { path: 'users', loadChildren: './pages/users/users.module#UsersPageModule' },
   { path: 'extra', loadChildren: './pages/extra/extra.module#ExtraPageModule' },
   { path: 'signup', loadChildren: './pages/signup/signup.module#SignupPageModule' },
-  { path: 'new-tweet', loadChildren: './pages/new-tweet/new-tweet.module#NewTweetPageModule' },  { path: 'comment', loadChildren: './pages/comment/comment.module#CommentPageModule' },
-  { path: 'tweet-detail', loadChildren: './pages/tweet-detail/tweet-detail.module#TweetDetailPageModule' },
-  { path: 'tweet-detail', loadChildren: './pages/tweet-detail/tweet-detail.module#TweetDetailPageModule' },
-
+  { path: 'new-tweet', loadChildren: './pages/new-tweet/new-tweet.module#NewTweetPageModule' },
+  { path: 'comment', loadChildren: './pages/comment/comment.module#CommentPageModule' },
+  { path: 'tweet-detail', loadChildren: './pages/tweet-detail/tweet-detail.module#TweetDetailPageModule' }
   
 
 ];
