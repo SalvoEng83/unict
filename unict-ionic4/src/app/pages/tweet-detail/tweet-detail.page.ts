@@ -190,7 +190,7 @@ export class TweetDetailPage implements OnInit {
 
   }
 
-  /*
+  
   async likeTweet(tweet:Tweet){
     this.tweetsService.likeTweet(tweet._id,this.auth.me._id);
     var user = tweet.like_user_list.find(x => x == this.auth.me._id);
@@ -206,7 +206,21 @@ export class TweetDetailPage implements OnInit {
     
     console.log("Current user: "+this.auth.me._id);
   }
-  */
+
+  isLiked(tweet:Tweet){
+    var user = tweet.like_user_list.find(x => x == this.auth.me._id);
+    if(user != undefined){
+      
+      return true;
+      
+    }
+    else{
+      return false;
+      
+    }
+  }
+
+ 
 
 
 }

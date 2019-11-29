@@ -25,32 +25,19 @@
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <b>Parent Id</b>
+                    <b>Author</b>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
-                    {{tweet.parent_id}}
+                    <p *ngIf="tweet._author; else userDeleted" class="user" [class.me]="canEdit(tweet)">
+                        {{ getAuthor(tweet) }}
+                        <ion-icon *ngIf="canEdit(tweet)" name="heart" color="danger-tint"></ion-icon>
+                    </p>
                 </ion-col>
             </ion-row>
         </ion-grid>
     </ion-item>
-
-    <ion-item>
-        <ion-grid>
-            <ion-row>
-                <ion-col>
-                    <b>Id</b>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    {{tweet._id}}
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </ion-item>
-
 
 
     <ion-item lines="none">
@@ -80,15 +67,14 @@
                 <ion-note slot="end">{{ formatDate(tweet.created_at) }}</ion-note>
 
                 <!-- Like button-->
-                <!--
+                <ion-icon (click)="likeTweet(tweet)" [color]="isLiked(tweet) ? 'danger' : 'dark'" name="heart"></ion-icon>
                 <ion-item lines="none">
-                    <ion-icon (click)="likeTweet(tweet)" [color]="isLiked(tweet) ? 'danger' : 'dark'" name="heart"></ion-icon>
+                    <p>{{tweet.like_user_list.length}}</p>
                 </ion-item>
-                -->
 
-                <ion-item lines="full">
+                <ion-item lines="none">
                     <ion-button color="primary" (click)="showTweetDetail(tweet)">
-                        <ion-icon name="more"></ion-icon>
+                        <ion-icon name="information-circle"></ion-icon>
                     </ion-button>
                 </ion-item>
             </ion-item>
