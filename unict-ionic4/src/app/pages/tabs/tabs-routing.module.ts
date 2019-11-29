@@ -47,6 +47,18 @@ const routes: Routes = [
           }
         ]
       },
+//modifiche storia3
+      {
+        path: 'bookmarks',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../bookmarks/bookmarks.module').then(m => m.BookmarksPageModule)
+          }
+        ]
+      },
+//end modifiche storia3
       {
         path: '',
         redirectTo: '/tabs/tweets',

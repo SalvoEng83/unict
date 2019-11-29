@@ -19,6 +19,10 @@ import { ToastService } from './shared/toast.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { CommentPageModule } from './pages/comment/comment.module';
+import { TweetDetailPageModule } from './pages/tweet-detail/tweet-detail.module';
+import { CommonModule } from '@angular/common'; 
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +32,10 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    NewTweetPageModule
+    NewTweetPageModule,
+    CommentPageModule,
+    TweetDetailPageModule,
+    CommonModule
   ],
   providers: [
     StatusBar,

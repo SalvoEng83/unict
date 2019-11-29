@@ -3,5 +3,6 @@ export interface User {
     password?: string;
     name: string;
     surname: string;
+    bookmarks: string[];
     _id?: string;
 }

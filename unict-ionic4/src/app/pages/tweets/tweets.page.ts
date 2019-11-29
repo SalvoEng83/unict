@@ -7,6 +7,11 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { UniLoaderService } from 'src/app/shared/uniLoader.service';
 import { ToastService } from 'src/app/shared/toast.service';
 import { ToastTypes } from 'src/app/enums/toast-types.enum';
+import { CommentPage } from 'src/app/pages/comment/comment.page';
+import { TweetDetailPage } from 'src/app/pages/tweet-detail/tweet-detail.page';
+import { NavController } from '@ionic/angular';
+import { UsersService } from 'src/app/services/users/users.service';
+
 
 @Component({
   selector: 'app-tweets',
@@ -22,7 +27,9 @@ export class TweetsPage implements OnInit {
     private modalCtrl: ModalController,
     private auth: AuthService,
     private uniLoader: UniLoaderService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private navCtrl: NavController,
+    private userService: UsersService
   ) { }
 
   async ngOnInit() {
@@ -40,7 +47,8 @@ export class TweetsPage implements OnInit {
       await this.uniLoader.show();
 
       // Popolo il mio array di oggetti 'Tweet' con quanto restituito dalla chiamata API
-      this.tweets = await this.tweetsService.getTweets();
+      //this.tweets = await this.tweetsService.getTweets();
+      this.tweets = await this.tweetsService.getParentTweets('0');
 
       // La chiamata è andata a buon fine, dunque rimuovo il loader
       await this.uniLoader.dismiss();
@@ -57,12 +65,18 @@ export class TweetsPage implements OnInit {
 
   }
 
+   /*Handle hashtags */
+   private hashtagsList:string[];
+
+
+
   async createOrEditTweet(tweet?: Tweet) {
 
     /*
         Creo una modal (assegnandola ad una variabile)
         per permettere all'utente di scrivere un nuovo tweet
     */
+
     const modal = await this.modalCtrl.create({
       component: NewTweetPage,
       componentProps: {
@@ -135,6 +149,32 @@ export class TweetsPage implements OnInit {
 
   }
 
+// storia3
+async books(tweet: Tweet){
+  if(this.auth.me.bookmarks.includes(tweet._id)){ //se lo trova lo rimuovo
+  for( var i = 0; i < this.auth.me.bookmarks.length; i++){ 
+    if ( this.auth.me.bookmarks[i] === tweet._id) {
+      this.auth.me.bookmarks.splice(i, 1); 
+    }
+ }
+}else{ //lo aggiungo
+  this.auth.me.bookmarks.push(tweet._id);
+}
+//aggiorna il db
+await this.userService.editUser(this.auth.me);
+}
+
+
+  preferred(tweet: Tweet): boolean{
+    //console.log(tweet._id);
+  
+    if(this.auth.me.bookmarks.includes(tweet._id))
+      return true;
+    else
+      return false;
+  }
+// fine modifiche storia3
+
   // Metodo bindato con l'interfaccia in Angular
   getAuthor(tweet: Tweet): string {
 
@@ -150,6 +190,116 @@ export class TweetsPage implements OnInit {
 
     */
 
+  }
+
+  //Create a comment
+  async createComment(tweet: Tweet){
+    //Create a modal to comment the tweet
+    const modal = await this.modalCtrl.create({
+      component: CommentPage,
+      componentProps: {tweet}
+    });
+    return modal.present();
+    
+  }
+  /*Handles tweet likes*/
+
+  
+
+  async likeTweet(tweet:Tweet){
+    this.tweetsService.likeTweet(tweet._id,this.auth.me._id);
+    var user = tweet.like_user_list.find(x => x == this.auth.me._id);
+    if(user != undefined){
+      var index = tweet.like_user_list.findIndex(x => x == this.auth.me._id);
+      tweet.like_user_list.splice(index,1);
+      
+    }
+    else{
+      tweet.like_user_list.push(this.auth.me._id);
+      
+    }
+    
+    console.log("Current user: "+this.auth.me._id);
+  }
+
+  async showTweetDetail(tweet: Tweet){
+    //Create a modal to comment the tweet
+    const detailmodal = await this.modalCtrl.create({
+      component: TweetDetailPage,
+      componentProps: {tweet}
+    });
+
+    detailmodal.onDidDismiss()
+    .then(async () => {
+  
+      // Aggiorno la mia lista di tweet, per importare le ultime modifiche apportate dall'utente
+      await this.getTweets();
+  
+      // La chiamata è andata a buon fine, dunque rimuovo il loader
+      await this.uniLoader.dismiss();
+  
+    });
+  
+    // Visualizzo la modal
+    return await detailmodal.present();  
+  }
+
+
+  isLiked(tweet:Tweet){
+    var user = tweet.like_user_list.find(x => x == this.auth.me._id);
+    if(user != undefined){
+      
+      return true;
+      
+    }
+    else{
+      return false;
+      
+    }
+  }
+ 
+
+  // SEARCH BAR
+  getItems(ev: any) {
+    // set val to the value of the searchbar
+    for(let i = 0; i <  this.tweets.length; i++){
+      this.tweets[i].hashtags = (this.tweets[i].tweet.split(' ').filter(v=> v.startsWith('#')));
+      
+      console.log(this.tweets[i].hashtags);
+    }
+    console.log("PROVA: "+this.tweets);
+    let val :string= ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    
+    if (val) {
+      if(val.startsWith("#")){
+        val=val;
+      }else{
+        val="#"+val;
+      }
+
+    this.tweets=this.tweets.filter((t)=>{
+        for(let i =0;i<t.hashtags.length;i++){
+          if(t.hashtags[i].toLowerCase().startsWith(val.toLowerCase())){
+            return t;
+          }
+        }
+    })
+
+    } else{
+      return this.getTweets();
+    }
+  }
+
+  addHashtagsToClass(){
+    for(let i = 0; i < this.tweets.length; i++){
+      if(this.tweets[i].tweet.includes("#")){
+        let tmp:any = (this.tweets[i].tweet.split(' ').filter(v=> v.startsWith('#')));
+        tmp.setAttribute("class","hashtag");
+        console.log(this.tweets[i].tweet.split(' ').filter(v=> v.startsWith('#')));
+      }
+    }
   }
 
 }
