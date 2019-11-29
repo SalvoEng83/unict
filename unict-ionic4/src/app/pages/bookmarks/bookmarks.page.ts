@@ -57,6 +57,24 @@ export class BookmarksPage implements OnInit {
 
   }
 
+  formatDate(value: string){
+    let timeDiff: number = 1;
+
+    const date = new Date(value);
+
+    const day = '0' + date.getDate();
+    const month = '0' + date.getMonth();
+    const year = date.getFullYear();
+    const hour = '0' + (date.getHours() + timeDiff);
+    const minute = '0' + date.getMinutes();
+
+    return day.slice(-2) + '-' +
+      month.slice(-2) + '-' +
+      year + ' ' +
+      hour.slice(-2) + ':' +
+      minute.slice(-2);
+}
+
   checkbook(tweet){
     if(this.auth.me.bookmarks.includes(tweet._id)){
       console.log("ho trovato il tweet tra i preferiti: " +tweet._id);
